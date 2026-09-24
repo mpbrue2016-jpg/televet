@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central TeleVet | Demonstração Completa Interativa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+      --accent: #10b981;
+      --accent-gradient: linear-gradient(135deg, #10b981, #047857);
+      --bg-dark: #080c14;
+      --panel-bg: rgba(15, 23, 42, 0.85);
+      --card-bg: rgba(23, 32, 54, 0.7);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Barra Superior de Controle */
+    .hub-header {
+      background: rgba(11, 17, 32, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-live {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Grid de Passos da Jornada */
+    .steps-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 0;
+    }
+
+    .step-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .step-btn.active {
+      background: var(--primary-gradient);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+    }
+
+    /* Container do Iframe */
+    .viewer-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .app-frame {
+      width: 100%;
+      height: 100%;
+      min-height: calc(100vh - 72px);
+      border: none;
+      background: #090d16;
+    }
+
+    /* Rodapé Informativo Rápido */
+    .quick-status-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    .open-external-btn {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .open-external-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Central -->
+  <header class="hub-header">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="brand-title">
+        🐾 Tele<span>Vet</span>
+      </div>
+      <div class="badge-live">
+        <span class="pulse"></span>
+        SISTEMA EM ATIVIDADE
+      </div>
+    </div>
+
+    <!-- Navegação Direta de Todas as Etapas do Fluxo -->
+    <nav class="steps-nav">
+      <button class="step-btn active" onclick="loadView('./petshop-page.html', this)">
+        1. Vitrine Pet Shop White-Label
+      </button>
+      <button class="step-btn" onclick="loadView('./veterinarians-catalog.html', this)">
+        2. Catálogo de Vets
+      </button>
+      <button class="step-btn" onclick="loadView('./tutor-booking-flow.html', this)">
+        3. Agendamento do Tutor
+      </button>
+      <button class="step-btn" onclick="loadView('./checkout-transparent.html', this)">
+        4. Checkout & Split
+      </button>
+      <button class="step-btn" onclick="loadView('./teleconsultation-room.html', this)">
+        5. Sala de Teleconsulta
+      </button>
+      <button class="step-btn" onclick="loadView('./dashboard-admin-master.html', this)">
+        6. Dashboard Master (KPIs)
+      </button>
+      <button class="step-btn" onclick="loadView('./petshop-saas-plans.html', this)">
+        7. Planos SaaS B2B
+      </button>
+    </nav>
+  </header>
+
+  <!-- Área de Exibição Interativa -->
+  <main class="viewer-container">
+    <iframe id="main-frame" class="app-frame" src="./petshop-page.html"></iframe>
+  </main>
+
+  <!-- Status Flutuante & Link de Abertura Direta -->
+  <div class="quick-status-bar">
+    <span id="current-view-title" style="color: var(--text-muted);">Visualizando: <strong>Vitrine Pet Shop White-Label</strong></span>
+    <a href="./petshop-page.html" target="_blank" id="external-link" class="open-external-btn">
+      Abrir em nova aba ↗
+    </a>
+  </div>
+
+  <script>
+    function loadView(url, buttonElement) {
+      const iframe = document.getElementById('main-frame');
+      const externalLink = document.getElementById('external-link');
+      const titleSpan = document.getElementById('current-view-title');
+
+      iframe.src = url;
+      externalLink.href = url;
+
+      document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
+      if (buttonElement) {
+        buttonElement.classList.add('active');
+        titleSpan.innerHTML = `Visualizando: <strong>${buttonElement.innerText.trim()}</strong>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

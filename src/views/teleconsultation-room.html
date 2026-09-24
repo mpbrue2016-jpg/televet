@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sala de Telemedicina Veterinária | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href=https://github.com/macconsultoriasant-lgtm/televet.gitcss2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --bg-dark: #070a12;
+      --panel-bg: rgba(15, 23, 42, 0.9);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Topbar da Sessão */
+    .session-bar {
+      height: 60px;
+      background: var(--panel-bg);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .session-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    /* Layout Split: Vídeo à Esquerda e Prontuário à Direita */
+    .main-workspace {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      flex: 1;
+      height: calc(100vh - 60px);
+    }
+
+    /* Área de Vídeo */
+    .video-viewport {
+      position: relative;
+      background: #020617;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+    }
+
+    .remote-video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remote-placeholder {
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .remote-placeholder img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+
+    .local-pip {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 180px;
+      height: 120px;
+      background: #1e293b;
+      border-radius: 14px;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      z-index: 10;
+    }
+
+    .call-controls {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: auto;
+    }
+
+    .control-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: rgba(30, 41, 59, 0.8);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(51, 65, 85, 0.9);
+    }
+
+    .control-btn.danger {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+
+    /* Painel do Prontuário Clínico (Direita) */
+    .record-panel {
+      background: var(--panel-bg);
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .panel-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .panel-body {
+      padding: 24px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      resize: vertical;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+
+    .panel-footer {
+      padding: 18px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-finish {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <header class="session-bar">
+    <div class="session-info">
+      <strong>Consulta #84920</strong>
+      <span style="color: var(--text-muted);">|</span>
+      <span>Paciente: <strong>Thor (Golden Retriever)</strong></span>
+      <span style="color: var(--text-muted);">|</span>
+      <span>Tutor: <strong>Ana Silva</strong></span>
+    </div>
+    <div class="status-badge">
+      <span class="pulse"></span> Consulta Ativa (Criptografia E2E)
+    </div>
+  </header>
+
+  <!-- Workspace Principal -->
+  <main class="main-workspace">
+
+    <!-- Lado Esquerdo: Sala de Vídeo -->
+    <div class="video-viewport">
+      <div class="remote-video-container">
+        <div class="remote-placeholder">
+          <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=150&q=80"
+            alt="Thor">
+          <h3>Thor com a tutora Ana Silva</h3>
+          <p style="font-size: 0.85rem;">Conexão WebRTC Estável (1080p 60fps)</p>
+        </div>
+      </div>
+
+      <!-- PiP da Câmera do Veterinário -->
+      <div class="local-pip">
+        <span>Você (Dra. Camila)</span>
+      </div>
+
+      <!-- Controles de Chamada -->
+      <div class="call-controls">
+        <button class="control-btn" title="Alternar Microfone">🎙️</button>
+        <button class="control-btn" title="Alternar Câmera">📷</button>
+        <button class="control-btn" title="Compartilhar Tela">🖥️</button>
+        <button class="control-btn danger" title="Encerrar Chamada">📞</button>
+      </div>
+    </div>
+
+    <!-- Lado Direito: Prontuário Médico em Tempo Real -->
+    <aside class="record-panel">
+      <div class="panel-header">
+        <h2>Prontuário Médico Eletrônico</h2>
+      </div>
+
+      <div class="panel-body">
+        <div class="form-group">
+          <label>Queixa Principal / Anamnese</label>
+          <textarea class="form-control" rows="3"
+            placeholder="Relato do tutor, início dos sintomas, alimentação recente...">Tutora relata tosse seca há 3 dias após passeio em parque.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Exame Físico Virtual / Inspeção</label>
+          <textarea class="form-control" rows="2"
+            placeholder="Respiração, mucosas, nível de alerta...">Paciente alerta, sem sinais de dispneia evidente, mucosas normocoradas.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Diagnóstico Preliminar</label>
+          <input type="text" class="form-control" value="Suspeita de Traqueobronquite Infecciosa Canina (Gripe Canina)">
+        </div>
+
+        <div class="form-group">
+          <label>Conduta Clínica & Orientações</label>
+          <textarea class="form-control" rows="4"
+            placeholder="Prescrição de medicamentos, cuidados, repouso...">Manter isolado de outros cães por 10 dias. Iniciar xarope mucolítico e nebulização.</textarea>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <button id="btn-finish-consultation" class="btn-finish">
+          Finalizar Atendimento & Emitir Receita
+        </button>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    document.getElementById('btn-finish-consultation')?.addEventListener('click', () => {
+      alert('✅ Atendimento concluído com sucesso!\n\n📄 Prontuário eletrônico arquivado sob sigilo médico.\n💊 Receita Digital emitida com código único: RX-8849-2026.\n📊 Repasse financeiro consolidado.');
+      window.location.href = './dashboard-admin-master.html';
+    });
+  </script>
+
+  </main>
+
+</body>
+
+</html>

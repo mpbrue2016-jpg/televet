@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Executivo Master | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --bg-dark: #07090e;
+      --sidebar-bg: #0c1017;
+      --card-bg: rgba(18, 24, 38, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #10b981;
+      --gold: #f59e0b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand-logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .brand-logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      list-style: none;
+    }
+
+    .nav-item {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      background: rgba(14, 165, 233, 0.15);
+      color: var(--primary);
+    }
+
+    /* Conteúdo Principal */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .top-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    /* Grid de Métricas Financeiras */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .kpi-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .kpi-sub {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Seções de Ecossistema */
+    .eco-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .panel-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 28px;
+    }
+
+    .panel-box h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .badge-pill.green { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+    .badge-pill.yellow { background: rgba(245, 158, 11, 0.15); color: var(--gold); }
+    .badge-pill.red { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand-logo">
+        🐾 Tele<span>Vet</span> <span style="font-size: 0.7rem; background: rgba(14, 165, 233, 0.2); padding: 2px 8px; border-radius: 4px;">MASTER</span>
+      </div>
+      <ul class="nav-links">
+        <li class="nav-item active" onclick="window.location.href='./dashboard-admin-master.html'">📊 Visão Geral (KPIs)</li>
+        <li class="nav-item" onclick="window.location.href='./petshop-page.html'">🏪 Vitrine Pet Shop White-Label</li>
+        <li class="nav-item" onclick="window.location.href='./veterinarians-catalog.html'">🩺 Marketplace de Vets</li>
+        <li class="nav-item" onclick="window.location.href='./tutor-booking-flow.html'">📅 Agendamento de Consultas</li>
+        <li class="nav-item" onclick="window.location.href='./checkout-transparent.html'">💰 Checkout & Split Financeiro</li>
+        <li class="nav-item" onclick="window.location.href='./teleconsultation-room.html'">📹 Sala de Telemedicina</li>
+        <li class="nav-item" onclick="window.location.href='./petshop-saas-plans.html'">📦 Planos SaaS Pet Shop</li>
+      </ul>
+    </div>
+    <div style="font-size: 0.8rem; color: var(--text-muted);">
+      Sessão Superadministrador
+    </div>
+  </aside>
+
+  <!-- Conteúdo Central -->
+  <main class="main-content">
+    
+    <div class="top-header">
+      <div>
+        <h1>Dashboard Geral da Plataforma</h1>
+        <p style="color: var(--text-muted);">Métricas financeiras consolidadas e integridade do marketplace em tempo real.</p>
+      </div>
+      <button style="background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">
+        ⚙️ Configurar Parâmetros Master
+      </button>
+    </div>
+
+    <!-- KPIs Financeiros -->
+    <div class="kpi-grid">
+      
+      <div class="kpi-card">
+        <div class="kpi-title">Receita Recorrente (MRR)</div>
+        <div class="kpi-value">R$ 42.890</div>
+        <div class="kpi-sub">ARR: R$ 514.680/ano</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">GMV Transacionado</div>
+        <div class="kpi-value">R$ 184.200</div>
+        <div class="kpi-sub">Total de consultas pagas</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">Comissões de Consultas</div>
+        <div class="kpi-value">R$ 36.840</div>
+        <div class="kpi-sub">20% média da plataforma</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">Receita Total Líquida</div>
+        <div class="kpi-value" style="color: var(--accent);">R$ 79.730</div>
+        <div class="kpi-sub">Mensalidades + Comissões</div>
+      </div>
+
+    </div>
+
+    <!-- Painéis de Ecossistema -->
+    <div class="eco-grid">
+      
+      <!-- Pet Shops -->
+      <div class="panel-box">
+        <h3>
+          <span>🏪 Pet Shops (Tenants)</span>
+          <span class="badge-pill">Total: 48</span>
+        </h3>
+        <div class="stat-row">
+          <span>Ativos e em dia com SaaS:</span>
+          <span class="badge-pill green">42 lojas</span>
+        </div>
+        <div class="stat-row">
+          <span>Em período de Trial (14 dias):</span>
+          <span class="badge-pill yellow">4 lojas</span>
+        </div>
+        <div class="stat-row">
+          <span>Inadimplentes (Em carência D+7):</span>
+          <span class="badge-pill red">2 lojas</span>
+        </div>
+        <div class="stat-row">
+          <span>Cancelados / Churn:</span>
+          <span class="badge-pill">0 lojas</span>
+        </div>
+      </div>
+
+      <!-- Corpo Veterinário -->
+      <div class="panel-box">
+        <h3>
+          <span>🩺 Médicos Veterinários</span>
+          <span class="badge-pill">Total: 124</span>
+        </h3>
+        <div class="stat-row">
+          <span>CRMV Validado e Disponíveis:</span>
+          <span class="badge-pill green">118 profissionais</span>
+        </div>
+        <div class="stat-row">
+          <span>Em Validação Documental:</span>
+          <span class="badge-pill yellow">6 cadastros</span>
+        </div>
+        <div class="stat-row">
+          <span>Suspensos / Irregulares:</span>
+          <span class="badge-pill red">0 profissionais</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- SDK Supabase e Configuração -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    const { createClient } = window.supabase || {};
+    const supabaseClient = (createClient && window.TELEVET_CONFIG)
+      ? createClient(window.TELEVET_CONFIG.supabaseUrl, window.TELEVET_CONFIG.supabaseAnonKey)
+      : null;
+
+    async function loadAdminMetrics() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient.rpc('get_master_admin_dashboard_metrics');
+        if (!error && data) {
+          console.log('Métricas reais do Supabase carregadas:', data);
+        }
+      } catch (err) {
+        console.debug('Dashboard em modo demonstração/resiliente:', err);
+      }
+    }
+
+    loadAdminMetrics();
+  </script>
+</body>
+</html>

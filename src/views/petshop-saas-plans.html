@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planos SaaS para Pet Shops | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --bg-dark: #080c14;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #10b981;
+      --gold: #f59e0b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 50px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-area {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .header-area h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-area p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+    }
+
+    /* Status Bar da Assinatura do Pet Shop */
+    .status-bar {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 14px 24px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .status-badge {
+      background: var(--accent);
+      color: #042f2e;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    /* Grid dos 3 Planos */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(14, 165, 233, 0.4);
+    }
+
+    .plan-card.featured {
+      border: 2px solid var(--primary);
+      background: radial-gradient(circle at top, rgba(14, 165, 233, 0.15), transparent 70%), var(--card-bg);
+      box-shadow: 0 15px 35px rgba(14, 165, 233, 0.2);
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-header h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .plan-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      min-height: 45px;
+    }
+
+    .plan-price {
+      margin: 24px 0;
+    }
+
+    .price-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .price-period {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+
+    .features-list li {
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #cbd5e1;
+    }
+
+    .check-icon {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .cross-icon {
+      color: #64748b;
+    }
+
+    .btn-choose {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    .btn-choose:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-choose.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+    }
+
+    .btn-choose.primary:hover {
+      box-shadow: 0 12px 28px rgba(14, 165, 233, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Topo -->
+    <div class="header-area">
+      <h1>Planos de Assinatura para Pet Shops</h1>
+      <p>Tenha seu hospital veterinário digital, telemedicina white-label e ganhe comissões recorrentes.</p>
+    </div>
+
+    <!-- Status Atual do Pet Shop -->
+    <div class="status-bar">
+      <div>
+        <span>Assinatura do Pet Shop: <strong>Pet Shop Amigo Fiel</strong></span>
+        <span style="color: var(--text-muted); margin-left: 12px;">• Próxima renovação: 23/10/2026</span>
+      </div>
+      <div class="status-badge">PLANO ATIVO (PROFISSIONAL)</div>
+    </div>
+
+    <!-- Grid dos 3 Planos -->
+    <div class="plans-grid">
+      
+      <!-- Plano BÁSICO -->
+      <div class="plan-card">
+        <div>
+          <div class="plan-header">
+            <h3>Básico</h3>
+            <p class="plan-desc">Ideal para lojas iniciando e testando telemedicina com seu público.</p>
+          </div>
+          <div class="plan-price">
+            <span class="price-number">R$ 199</span>
+            <span class="price-period">/mês</span>
+          </div>
+          <ul class="features-list">
+            <li><span class="check-icon">✓</span> Até 3 usuários da equipe</li>
+            <li><span class="check-icon">✓</span> Até 2 veterinários parceiros</li>
+            <li><span class="check-icon">✓</span> Até 30 teleconsultas/mês</li>
+            <li><span class="check-icon">✓</span> Relatórios padrão</li>
+            <li><span class="cross-icon">✕</span> Sem domínio próprio</li>
+            <li><span class="cross-icon">✕</span> Sem WhatsApp automatizado</li>
+            <li><span class="cross-icon">✕</span> Sem acesso à API</li>
+          </ul>
+        </div>
+        <button class="btn-choose" onclick="alert('Downgrade para Básico selecionado.')">Mudar para Básico</button>
+      </div>
+
+      <!-- Plano PROFISSIONAL (Destaque) -->
+      <div class="plan-card featured">
+        <div class="featured-tag">Mais Popular</div>
+        <div>
+          <div class="plan-header">
+            <h3>Profissional</h3>
+            <p class="plan-desc">Para pet shops consolidados com equipe e estratégias de marketing.</p>
+          </div>
+          <div class="plan-price">
+            <span class="price-number">R$ 399</span>
+            <span class="price-period">/mês</span>
+          </div>
+          <ul class="features-list">
+            <li><span class="check-icon">✓</span> Até 10 usuários da equipe</li>
+            <li><span class="check-icon">✓</span> Até 10 veterinários parceiros</li>
+            <li><span class="check-icon">✓</span> Até 150 teleconsultas/mês</li>
+            <li><span class="check-icon">✓</span> Disparo via WhatsApp Oficial</li>
+            <li><span class="check-icon">✓</span> Cupons e campanhas de marketing</li>
+            <li><span class="check-icon">✓</span> Relatórios analíticos avançados</li>
+            <li><span class="cross-icon">✕</span> Sem domínio próprio customizado</li>
+          </ul>
+        </div>
+        <button class="btn-choose primary" style="cursor: default;">Seu Plano Atual</button>
+      </div>
+
+      <!-- Plano PREMIUM -->
+      <div class="plan-card">
+        <div>
+          <div class="plan-header">
+            <h3>Premium</h3>
+            <p class="plan-desc">Acesso total e irrestrito, domínio próprio, White-Label e API aberta.</p>
+          </div>
+          <div class="plan-price">
+            <span class="price-number">R$ 699</span>
+            <span class="price-period">/mês</span>
+          </div>
+          <ul class="features-list">
+            <li><span class="check-icon">✓</span> Usuários ilimitados</li>
+            <li><span class="check-icon">✓</span> Veterinários ilimitados</li>
+            <li><span class="check-icon">✓</span> Teleconsultas ilimitadas</li>
+            <li><span class="check-icon">✓</span> <strong>Domínio próprio customizado</strong></li>
+            <li><span class="check-icon">✓</span> White-Label 100% independente</li>
+            <li><span class="check-icon">✓</span> Acesso total a APIs e Webhooks</li>
+            <li><span class="check-icon">✓</span> Gerente de contas dedicado</li>
+          </ul>
+        </div>
+        <button class="btn-choose" onclick="alert('Upgrade para Premium solicitado!')">Fazer Upgrade</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

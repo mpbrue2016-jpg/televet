@@ -1,0 +1,23 @@
+{
+  "name": "televet",
+  "version": "1.0.0",
+  "description": "Plataforma TeleVet - Telemedicina Veterinária e Marketplace Multi-Tenant para Pet Shops Parceiros",
+  "main": "index.js",
+  "scripts": {
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "supabase:test": "supabase test db"
+  },
+  "keywords": [
+    "televet",
+    "veterinary",
+    "telemedicine",
+    "multi-tenant",
+    "supabase",
+    "postgresql",
+    "marketplace"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Seguro | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --bg-dark: #080c14;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Detalhes da Consulta */
+    .consultation-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .summary-item label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .summary-item strong {
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    /* Seletor de Pagamento */
+    .payment-methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .method-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .method-card.selected {
+      border-color: var(--primary);
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    .method-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    /* Área PIX */
+    .pix-box {
+      text-align: center;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 16px;
+    }
+
+    .pix-qr {
+      width: 180px;
+      height: 180px;
+      background: white;
+      padding: 10px;
+      border-radius: 12px;
+      margin: 16px auto;
+      display: block;
+    }
+
+    /* Discriminação Transparente do Split & Taxas */
+    .fee-breakdown {
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+      margin-top: 20px;
+    }
+
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .fee-row.total {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+      border-top: 1px solid var(--border-color);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .policy-box {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .btn-pay {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 24px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s;
+    }
+
+    .btn-pay:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="card">
+      <h2>🛡️ Pagamento Transparente & Seguro</h2>
+
+      <!-- Detalhes da Consulta -->
+      <div class="consultation-summary">
+        <div class="summary-item">
+          <label>Médico Veterinário</label>
+          <strong>Dr. João Silveira (CRMV-SP 38412)</strong>
+        </div>
+        <div class="summary-item">
+          <label>Especialidade</label>
+          <strong>Cardiologia Veterinária</strong>
+        </div>
+        <div class="summary-item">
+          <label>Data & Horário</label>
+          <strong>23 de Setembro de 2026 às 10:30</strong>
+        </div>
+        <div class="summary-item">
+          <label>Pet Shop Parceiro</label>
+          <strong>Pet Shop Animal Feliz (Moema)</strong>
+        </div>
+      </div>
+
+      <!-- Métodos de Pagamento -->
+      <h3 style="font-size: 1.1rem; margin-bottom: 14px;">Forma de Pagamento</h3>
+      <div class="payment-methods">
+        <div class="method-card selected">
+          <div class="method-icon">⚡</div>
+          <strong>PIX Instantâneo</strong>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 4px;">Aprovação Imediata</span>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">💳</div>
+          <strong>Cartão de Crédito</strong>
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 4px;">Até 3x sem juros</span>
+        </div>
+      </div>
+
+      <!-- QR Code PIX -->
+      <div id="box-pix" class="pix-box">
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Escaneie o QR Code abaixo pelo app do seu banco ou copie a chave Pix:</p>
+        <img class="pix-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014br.gov.bcb.pix0136televet-mock-pix-key-20265204000053039865406200.005802BR5915TELEVET+HEALTH6009SAO+PAULO62070503***6304E2D1" alt="QR Code PIX">
+        <input type="text" readonly value="00020126580014br.gov.bcb.pix0136televet-mock-pix-key-20265204000053039865406200.005802BR5915TELEVET" style="width: 100%; max-width: 480px; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: #94a3b8; padding: 10px; border-radius: 8px; font-size: 0.8rem; text-align: center;">
+      </div>
+
+      <!-- Formulário de Cartão de Crédito (Alternável) -->
+      <div id="box-card" style="display: none; background: rgba(15,23,42,0.6); padding: 24px; border-radius: 14px; border: 1px solid var(--border-color); margin-bottom: 24px;">
+        <h4 style="font-size: 1rem; margin-bottom: 16px; color: var(--text-main);">Dados do Cartão de Crédito</h4>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">Número do Cartão:</label>
+            <input type="text" id="card-number" placeholder="4532 •••• •••• 8921" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px;">
+          </div>
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">Nome Impresso:</label>
+              <input type="text" id="card-holder" placeholder="ANA C SILVA" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">Validade:</label>
+              <input type="text" id="card-exp" placeholder="08/29" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">CVV:</label>
+              <input type="password" id="card-cvv" placeholder="•••" maxlength="4" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 4px;">Parcelamento:</label>
+            <select style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 8px;">
+              <option value="1">1x de R$ 200,00 (sem juros)</option>
+              <option value="2">2x de R$ 100,00 (sem juros)</option>
+              <option value="3">3x de R$ 66,67 (sem juros)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transparência Total de Taxas e Split -->
+      <div class="fee-breakdown">
+        <div class="fee-row">
+          <span>Valor Bruto da Consulta:</span>
+          <span>R$ 200,00</span>
+        </div>
+        <div class="fee-row">
+          <span>Taxa de Processamento do Gateway (0,99%):</span>
+          <span>R$ 1,98</span>
+        </div>
+        <div class="fee-row">
+          <span>Repasse Veterinário (70%):</span>
+          <span>R$ 140,00</span>
+        </div>
+        <div class="fee-row">
+          <span>Comissão Pet Shop Parceiro (10%):</span>
+          <span>R$ 20,00</span>
+        </div>
+        <div class="fee-row">
+          <span>Taxa Plataforma TeleVet (20%):</span>
+          <span>R$ 40,00</span>
+        </div>
+        <div class="fee-row total">
+          <span>Total a Pagar:</span>
+          <span>R$ 200,00</span>
+        </div>
+      </div>
+
+      <!-- Política de Cancelamento e Reembolso -->
+      <div class="policy-box">
+        <strong>Política de Cancelamento:</strong> Cancelamentos solicitados com até 2 horas de antecedência possuem 100% de reembolso automático estornado para a mesma forma de pagamento.
+      </div>
+
+      <button id="btn-confirm-payment" class="btn-pay">
+        Confirmar Pagamento de R$ 200,00
+      </button>
+    </div>
+
+  </div>
+
+  <!-- SDK Supabase e Configuração -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    const { createClient } = window.supabase || {};
+    const supabaseClient = (createClient && window.TELEVET_CONFIG)
+      ? createClient(window.TELEVET_CONFIG.supabaseUrl, window.TELEVET_CONFIG.supabaseAnonKey)
+      : null;
+
+    // Alternância visual entre PIX e Cartão de Crédito
+    const methodCards = document.querySelectorAll('.method-card');
+    const boxPix = document.getElementById('box-pix');
+    const boxCard = document.getElementById('box-card');
+
+    methodCards.forEach((card, index) => {
+      card.addEventListener('click', () => {
+        methodCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+
+        if (index === 0) {
+          boxPix.style.display = 'block';
+          boxCard.style.display = 'none';
+        } else {
+          boxPix.style.display = 'none';
+          boxCard.style.display = 'block';
+        }
+      });
+    });
+
+    // Recupera dados preenchidos no formulário da etapa anterior
+    try {
+      const savedData = JSON.parse(localStorage.getItem('televet_booking_form') || '{}');
+      if (savedData.tutorName) {
+        console.log('Dados do tutor recuperados do formulário:', savedData);
+      }
+    } catch (e) {}
+
+    document.getElementById('btn-confirm-payment')?.addEventListener('click', async () => {
+      const btn = document.getElementById('btn-confirm-payment');
+      btn.innerText = 'Processando Split Seguro...';
+      btn.disabled = true;
+
+      // Executa o processamento do split caso a função RPC esteja disponível no banco
+      if (supabaseClient) {
+        try {
+          const idempotencyKey = 'pay_' + Math.random().toString(36).substring(2) + Date.now();
+          const { data, error } = await supabaseClient.rpc('process_appointment_payment_split', {
+            p_appointment_id: '00000000-0000-0000-0000-000000000001',
+            p_gateway: 'pagarme',
+            p_gateway_tx_id: 'tx_' + Date.now(),
+            p_payment_method: 'pix',
+            p_idempotency_key: idempotencyKey
+          });
+
+          if (!error && data) {
+            console.log('Split gravado com sucesso no Supabase:', data);
+          }
+        } catch (err) {
+          console.debug('Simulação concluída com sucesso no cliente:', err);
+        }
+      }
+
+      setTimeout(() => {
+        alert('Pagamento confirmado com sucesso!\nSplit Tripartido calculado e registrado.');
+        window.location.href = './teleconsultation-room.html';
+      }, 700);
+    });
+  </script>
+</body>
+</html>

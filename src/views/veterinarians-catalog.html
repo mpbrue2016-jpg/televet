@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace de Veterinários | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --bg-dark: #090d16;
+      --card-bg: rgba(19, 27, 46, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-green: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header-section h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .header-section p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Barra de Filtros por Especialidade */
+    .specialties-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+      scrollbar-width: thin;
+    }
+
+    .specialty-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .specialty-chip.active, .specialty-chip:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Grid de Profissionais */
+    .vets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .vet-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .vet-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(14, 165, 233, 0.4);
+    }
+
+    .vet-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .vet-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .vet-info h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .crmv-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+
+    .specialties-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .vet-pricing {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    .price-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .duration-val {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .slots-box {
+      margin-bottom: 18px;
+    }
+
+    .slots-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: block;
+      font-weight: 600;
+    }
+
+    .slots-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .slot-pill {
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-schedule {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      transition: box-shadow 0.2s;
+    }
+
+    .btn-schedule:hover {
+      box-shadow: 0 6px 18px rgba(14, 165, 233, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-section">
+      <h1>Marketplace de Especialistas Veterinários</h1>
+      <p>Médicos veterinários certificados com CRMV ativo para atendimento por telemedicina.</p>
+    </div>
+
+    <!-- Filtros de Especialidades -->
+    <div class="specialties-bar">
+      <div class="specialty-chip active">Todas as Especialidades</div>
+      <div class="specialty-chip">Cardiologia</div>
+      <div class="specialty-chip">Dermatologia</div>
+      <div class="specialty-chip">Clínica geral</div>
+      <div class="specialty-chip">Ortopedia</div>
+      <div class="specialty-chip">Felinos</div>
+      <div class="specialty-chip">Nutrição</div>
+      <div class="specialty-chip">Animais exóticos</div>
+      <div class="specialty-chip">Odontologia</div>
+      <div class="specialty-chip">Comportamento</div>
+    </div>
+
+    <!-- Catálogo de Profissionais -->
+    <div class="vets-grid">
+      
+      <!-- Card Dr. João (Cardiologista) -->
+      <div class="vet-card">
+        <div>
+          <div class="vet-header">
+            <img class="vet-avatar" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=200&q=80" alt="Dr. João">
+            <div class="vet-info">
+              <h3>Dr. João Silveira</h3>
+              <div class="crmv-badge">✓ CRMV-SP 38412 • Validado</div>
+            </div>
+          </div>
+
+          <div class="specialties-tags">
+            <span class="tag">Cardiologia</span>
+            <span class="tag">Clínica geral</span>
+          </div>
+
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+            Especialista em cardiopatias congênitas e eletrocardiografia com 12 anos de experiência clínica.
+          </p>
+
+          <div class="vet-pricing">
+            <div>
+              <span class="price-val">R$ 180,00</span>
+              <div class="duration-val">por teleconsulta</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-weight: 700; color: #e2e8f0;">45 minutos</span>
+              <div class="duration-val">duração média</div>
+            </div>
+          </div>
+
+          <div class="slots-box">
+            <span class="slots-label">Próximos horários disponíveis:</span>
+            <div class="slots-list">
+              <span class="slot-pill">Hoje 15:30</span>
+              <span class="slot-pill">Hoje 17:00</span>
+              <span class="slot-pill">Amanhã 09:30</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-schedule">Agendar Consulta</button>
+      </div>
+
+      <!-- Card Dra. Camila (Dermatologista) -->
+      <div class="vet-card">
+        <div>
+          <div class="vet-header">
+            <img class="vet-avatar" src="https://images.unsplash.com/photo-1594824813583-16a75f8f5df3?auto=format&fit=crop&w=200&q=80" alt="Dra. Camila">
+            <div class="vet-info">
+              <h3>Dra. Camila Duarte</h3>
+              <div class="crmv-badge">✓ CRMV-SP 45892 • Validado</div>
+            </div>
+          </div>
+
+          <div class="specialties-tags">
+            <span class="tag">Dermatologia</span>
+            <span class="tag">Felinos</span>
+          </div>
+
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+            Tratamento de alergias complexas, atopia e infecções dermatológicas recorrentes em cães e gatos.
+          </p>
+
+          <div class="vet-pricing">
+            <div>
+              <span class="price-val">R$ 150,00</span>
+              <div class="duration-val">por teleconsulta</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-weight: 700; color: #e2e8f0;">45 minutos</span>
+              <div class="duration-val">duração média</div>
+            </div>
+          </div>
+
+          <div class="slots-box">
+            <span class="slots-label">Próximos horários disponíveis:</span>
+            <div class="slots-list">
+              <span class="slot-pill">Hoje 14:00</span>
+              <span class="slot-pill">Hoje 16:30</span>
+              <span class="slot-pill">Amanhã 11:00</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-schedule">Agendar Consulta</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SDK Supabase e Configuração -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    const { createClient } = window.supabase || {};
+    const supabaseClient = (createClient && window.TELEVET_CONFIG)
+      ? createClient(window.TELEVET_CONFIG.supabaseUrl, window.TELEVET_CONFIG.supabaseAnonKey)
+      : null;
+
+    async function loadVeterinarians() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient.rpc('search_marketplace_veterinarians', {
+          p_limit: 10,
+          p_offset: 0
+        });
+        if (!error && data && data.length > 0) {
+          console.log('Veterinários carregados do Supabase:', data);
+        }
+      } catch (err) {
+        console.debug('Aguardando dados ou funções no banco:', err);
+      }
+    }
+
+    loadVeterinarians();
+
+    // Eventos de agendamento redirecionando para o fluxo de checkout
+    document.querySelectorAll('.btn-schedule').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        window.location.href = './tutor-booking-flow.html';
+      });
+    });
+  </script>
+</body>
+</html>

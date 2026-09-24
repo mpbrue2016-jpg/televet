@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento de Consulta Veterinária | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --bg-dark: #090d16;
+      --card-bg: rgba(19, 27, 46, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-green: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Carimbo de Origem do Pet Shop */
+    .partner-stamp {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 12px 20px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .partner-stamp span {
+      font-size: 0.9rem;
+      color: var(--accent-green);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-item.active {
+      color: var(--primary);
+    }
+
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .step-item.active .step-circle {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    /* Pets Grid */
+    .pets-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .pet-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .pet-card.selected {
+      border-color: var(--primary);
+      background: rgba(14, 165, 233, 0.12);
+    }
+
+    .pet-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 10px auto;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Grade de Horários */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .slot-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .slot-btn.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .slot-btn:hover:not(.selected) {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Resumo Final */
+    .order-summary {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .summary-row.total {
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+
+    .btn-checkout {
+      background: linear-gradient(135deg, var(--accent-green), #059669);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 24px;
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Carimbo de Rastreamento do Pet Shop de Origem -->
+    <div class="partner-stamp">
+      <span>🐾 Atendimento vinculado ao parceiro: <strong>Pet Shop Animal Feliz (Moema)</strong></span>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Origem Garantida</span>
+    </div>
+
+    <!-- Stepper de Agendamento -->
+    <div class="stepper">
+      <div class="step-item active">
+        <div class="step-circle">1</div>
+        <span>Seu Pet</span>
+      </div>
+      <div class="step-item active">
+        <div class="step-circle">2</div>
+        <span>Especialista</span>
+      </div>
+      <div class="step-item active">
+        <div class="step-circle">3</div>
+        <span>Data & Hora</span>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">4</div>
+        <span>Pagamento</span>
+      </div>
+    </div>
+
+    <!-- Card de Dados do Tutor -->
+    <div class="card">
+      <h2>1. Seus Dados de Contato</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 6px;">Nome Completo:</label>
+          <input type="text" id="tutor-name" value="Ana Carolina da Silva" style="width: 100%; box-sizing: border-box; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 12px; border-radius: 10px;">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 6px;">CPF:</label>
+          <input type="text" id="tutor-cpf" value="382.491.028-55" style="width: 100%; box-sizing: border-box; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 12px; border-radius: 10px;">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 6px;">E-mail para Recebimento de Prescrição:</label>
+          <input type="email" id="tutor-email" value="ana.silva@email.com" style="width: 100%; box-sizing: border-box; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 12px; border-radius: 10px;">
+        </div>
+        <div>
+          <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 6px;">WhatsApp / Celular:</label>
+          <input type="tel" id="tutor-phone" value="(11) 98765-4321" style="width: 100%; box-sizing: border-box; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 12px; border-radius: 10px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Seleção e Cadastro do Pet -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>2. Selecione ou Cadastre o Paciente</h2>
+        <button id="btn-toggle-add-pet" type="button" style="background: rgba(14, 165, 233, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+          + Cadastrar Novo Pet
+        </button>
+      </div>
+
+      <div class="pets-selector" id="pets-list">
+        <div class="pet-card selected" data-name="Thor" data-species="Canina">
+          <img class="pet-avatar" src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=150&q=80" alt="Thor">
+          <strong style="display:block;">Thor</strong>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Golden Retriever • 3 anos</span>
+        </div>
+        <div class="pet-card" data-name="Luna" data-species="Felina">
+          <img class="pet-avatar" src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=150&q=80" alt="Luna">
+          <strong style="display:block;">Luna</strong>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Siamês • 1 ano</span>
+        </div>
+      </div>
+
+      <!-- Formulário Inline de Novo Pet (Oculto por padrão) -->
+      <div id="new-pet-form" style="display: none; background: rgba(15,23,42,0.6); padding: 20px; border-radius: 12px; border: 1px dashed var(--primary); margin-bottom: 20px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 14px; color: var(--primary);">Novo Paciente</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Nome do Pet:</label>
+            <input type="text" id="new-pet-name" placeholder="Ex: Bob" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--card-border); color: white; padding: 10px; border-radius: 8px;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Espécie:</label>
+            <select id="new-pet-species" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--card-border); color: white; padding: 10px; border-radius: 8px;">
+              <option value="Canina">Cachorro</option>
+              <option value="Felina">Gato</option>
+              <option value="Silvestre">Ave / Silvestre</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Raça:</label>
+            <input type="text" id="new-pet-breed" placeholder="Ex: Labrador" style="width: 100%; box-sizing: border-box; background: rgba(2,6,23,0.8); border: 1px solid var(--card-border); color: white; padding: 10px; border-radius: 8px;">
+          </div>
+        </div>
+        <button id="btn-save-pet" type="button" style="margin-top: 12px; background: var(--primary); border: none; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+          Salvar Pet
+        </button>
+      </div>
+
+      <!-- Motivo da Consulta / Sintomas Iniciais -->
+      <div style="margin-top: 16px;">
+        <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 6px;">Qual é o motivo principal da consulta? (Sintomas observados):</label>
+        <textarea id="consultation-reason" rows="3" style="width: 100%; box-sizing: border-box; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 12px; border-radius: 10px; font-family: inherit;" placeholder="Ex: Está tossindo com frequência e com respiração ofegante desde ontem...">Tosse seca e cansaço fácil após passeios nos últimos dias.</textarea>
+      </div>
+    </div>
+
+    <!-- Card de Horários Livres -->
+    <div class="card">
+      <h2>2. Escolha o Horário da Consulta</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Profissional: <strong>Dr. João Silveira</strong> (Cardiologia Veterinária) • Duração: <strong>45 min</strong>
+      </p>
+
+      <div style="margin-top: 16px;">
+        <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">Data Selecionada:</label>
+        <input type="date" value="2026-09-23" style="background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); color: white; padding: 10px 14px; border-radius: 8px; margin-left: 10px;">
+      </div>
+
+      <div class="slots-grid">
+        <div class="slot-btn">09:00</div>
+        <div class="slot-btn">09:45</div>
+        <div class="slot-btn selected">10:30</div>
+        <div class="slot-btn">14:00</div>
+        <div class="slot-btn">14:45</div>
+        <div class="slot-btn">15:30</div>
+      </div>
+
+      <!-- Resumo do Agendamento -->
+      <div class="order-summary">
+        <div class="summary-row">
+          <span>Consulta Online (Cardiologia)</span>
+          <span>R$ 180,00</span>
+        </div>
+        <div class="summary-row">
+          <span>Duração Estimada</span>
+          <span>45 minutos</span>
+        </div>
+        <div class="summary-row">
+          <span>Parceiro Credenciado</span>
+          <span>Pet Shop Animal Feliz</span>
+        </div>
+        <div class="summary-row total">
+          <span>Valor a Pagar:</span>
+          <span>R$ 180,00</span>
+        </div>
+      </div>
+
+      <button id="btn-to-checkout" class="btn-checkout">Prosseguir para Pagamento Seguro</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Toggle de exibição do formulário de novo pet
+    const btnToggle = document.getElementById('btn-toggle-add-pet');
+    const petForm = document.getElementById('new-pet-form');
+    btnToggle?.addEventListener('click', () => {
+      const isVisible = petForm.style.display === 'block';
+      petForm.style.display = isVisible ? 'none' : 'block';
+      btnToggle.innerText = isVisible ? '+ Cadastrar Novo Pet' : '✕ Cancelar';
+    });
+
+    // Salvar novo pet no seletor
+    document.getElementById('btn-save-pet')?.addEventListener('click', () => {
+      const name = document.getElementById('new-pet-name').value.trim();
+      const breed = document.getElementById('new-pet-breed').value.trim() || 'SRD';
+      const species = document.getElementById('new-pet-species').value;
+
+      if (!name) {
+        alert('Por favor, informe o nome do pet.');
+        return;
+      }
+
+      const petsList = document.getElementById('pets-list');
+      const newCard = document.createElement('div');
+      newCard.className = 'pet-card selected';
+      newCard.setAttribute('data-name', name);
+      newCard.setAttribute('data-species', species);
+      newCard.innerHTML = `
+        <img class="pet-avatar" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=150&q=80" alt="${name}">
+        <strong style="display:block;">${name}</strong>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">${breed} • Novo</span>
+      `;
+
+      document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+      petsList.appendChild(newCard);
+      attachPetCardEvents();
+
+      petForm.style.display = 'none';
+      btnToggle.innerText = '+ Cadastrar Novo Pet';
+      document.getElementById('new-pet-name').value = '';
+      document.getElementById('new-pet-breed').value = '';
+      alert(`Pet "${name}" cadastrado com sucesso!`);
+    });
+
+    function attachPetCardEvents() {
+      document.querySelectorAll('.pet-card').forEach(card => {
+        card.onclick = () => {
+          document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+        };
+      });
+    }
+    attachPetCardEvents();
+
+    // Seleção de Horários
+    document.querySelectorAll('.slot-btn').forEach(slot => {
+      slot.addEventListener('click', () => {
+        document.querySelectorAll('.slot-btn').forEach(s => s.classList.remove('selected'));
+        slot.classList.add('selected');
+      });
+    });
+
+    // Navegação para o Checkout com persistência dos dados do formulário
+    document.getElementById('btn-to-checkout')?.addEventListener('click', () => {
+      const tutorName = document.getElementById('tutor-name')?.value || 'Ana Carolina da Silva';
+      const tutorCpf = document.getElementById('tutor-cpf')?.value || '';
+      const tutorEmail = document.getElementById('tutor-email')?.value || '';
+      const selectedPet = document.querySelector('.pet-card.selected strong')?.innerText || 'Thor';
+      const reason = document.getElementById('consultation-reason')?.value || '';
+
+      localStorage.setItem('televet_booking_form', JSON.stringify({
+        tutorName,
+        tutorCpf,
+        tutorEmail,
+        selectedPet,
+        reason,
+        scheduledAt: '23/09/2026 às 10:30'
+      }));
+
+      window.location.href = './checkout-transparent.html';
+    });
+  </script>
+</body>
+</html>

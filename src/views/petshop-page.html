@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Pet Shop Parceiro | TeleVet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #10b981;
+      --brand-secondary: #047857;
+      --brand-primary-rgb: 16, 185, 129;
+      --bg-dark: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+
+    /* Top Bar White-Label */
+    .top-badge {
+      background: linear-gradient(90deg, var(--brand-secondary), var(--brand-primary));
+      padding: 8px 16px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Header e Banner */
+    .banner-container {
+      position: relative;
+      height: 280px;
+      background: linear-gradient(rgba(15, 23, 42, 0.5), var(--bg-dark)), url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=1600&q=80') center/cover;
+      display: flex;
+      align-items: flex-end;
+      padding: 32px 24px;
+    }
+
+    .banner-content {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      top: 30px;
+    }
+
+    .petshop-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 20px;
+      background: #ffffff;
+      padding: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      border: 3px solid var(--brand-primary);
+      object-fit: cover;
+    }
+
+    .petshop-titles h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .petshop-titles p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 50px auto 40px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+      flex: 1;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .hero-cta-card {
+      background: radial-gradient(circle at top left, rgba(var(--brand-primary-rgb), 0.15), transparent 70%), var(--card-bg);
+      border: 1px solid rgba(var(--brand-primary-rgb), 0.3);
+    }
+
+    .badge-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(var(--brand-primary-rgb), 0.15);
+      color: var(--brand-primary);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero-cta-card h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: white;
+      border: none;
+      padding: 18px 32px;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      margin-top: 24px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 20px rgba(var(--brand-primary-rgb), 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(var(--brand-primary-rgb), 0.45);
+    }
+
+    /* Sidebar - QR Code e Compartilhamento */
+    .qr-card {
+      text-align: center;
+    }
+
+    .qr-container {
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      display: inline-block;
+      margin: 20px 0;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .qr-img {
+      width: 180px;
+      height: 180px;
+      display: block;
+    }
+
+    .btn-whatsapp {
+      background-color: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      text-decoration: none;
+      margin-top: 12px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-whatsapp:hover {
+      background-color: #1ebc59;
+    }
+
+    .copy-link-box {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .copy-input {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      width: 100%;
+      outline: none;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Info Lists */
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+
+    .info-item strong {
+      color: var(--text-main);
+      display: block;
+    }
+
+    /* Responsividade */
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .banner-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar White-Label -->
+  <div class="top-badge">
+    <span>🐾 Telemedicina Veterinária Oficial em Parceria com <strong id="top-brand-name">Animal Feliz</strong></span>
+  </div>
+
+  <!-- Header Banner -->
+  <header class="banner-container" id="banner-header">
+    <div class="banner-content">
+      <img id="petshop-logo" class="petshop-logo" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=200&q=80" alt="Logo">
+      <div class="petshop-titles">
+        <h1 id="petshop-name">Pet Shop Animal Feliz</h1>
+        <p id="petshop-trade">Unidade Especializada em Cuidado Pet</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="container">
+    
+    <!-- Coluna Esquerda: Ação de Consulta & Sobre -->
+    <section>
+      <div class="card hero-cta-card">
+        <div class="badge-verified">
+          <span>✓</span> Atendimento Veterinário Conectado
+        </div>
+        <h2>Precisa de Ajuda para o seu Filho de Quatro Patas?</h2>
+        <p>Realize agora mesmo uma consulta com médicos veterinários qualificados online, com prescrição digital e acompanhamento integrado à nossa loja.</p>
+
+        <!-- Botão Principal de Atendimento com Rastreamento -->
+        <a href="./veterinarians-catalog.html?ref=AFELIZ2026" id="btn-consulte-agora" class="btn-primary">
+          🩺 CONSULTE UM VETERINÁRIO AGORA
+        </a>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">Sobre Nossa Loja</h3>
+        <p id="petshop-commercial" style="color: var(--text-muted); margin-bottom: 20px;">
+          Há mais de 10 anos trazendo carinho, os melhores produtos e agora telemedicina veterinária de ponta para a sua família.
+        </p>
+
+        <div class="info-item">
+          <span style="font-size: 1.3rem;">📍</span>
+          <div>
+            <strong>Endereço:</strong>
+            <span id="petshop-address">Rua das Flores, 120 - Centro</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span style="font-size: 1.3rem;">⏰</span>
+          <div>
+            <strong>Horário de Funcionamento:</strong>
+            <span id="petshop-hours">Segunda a Sexta: 08:00 - 19:00 | Sábado: 08:00 - 18:00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coluna Direita: QR Code, Link Exclusivo e WhatsApp -->
+    <aside>
+      <div class="card qr-card">
+        <h3>Indique ou Acesse pelo Celular</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Escaneie o QR Code no balcão da loja para agendar com nossa equipe.</p>
+        
+        <div class="qr-container">
+          <img id="qr-image" class="qr-img" src="" alt="QR Code de Acesso">
+        </div>
+
+        <!-- Compartilhamento WhatsApp -->
+        <a href="#" id="btn-share-whatsapp" target="_blank" class="btn-whatsapp">
+          📲 Compartilhar pelo WhatsApp
+        </a>
+
+        <!-- Copiar Link Exclusivo -->
+        <div class="copy-link-box">
+          <input type="text" id="exclusive-link-input" class="copy-input" readonly value="">
+          <button id="btn-copy-link" class="btn-copy">Copiar</button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- SDK Supabase e Configuração -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+
+  <!-- Script de Rastreamento e Carregamento Conectado ao Supabase -->
+  <script>
+    // Inicialização do cliente Supabase a partir das credenciais do projeto
+    const { createClient } = window.supabase || {};
+    const supabaseClient = (createClient && window.TELEVET_CONFIG)
+      ? createClient(window.TELEVET_CONFIG.supabaseUrl, window.TELEVET_CONFIG.supabaseAnonKey)
+      : null;
+
+    // Perfil fallback padrão para navegação e demonstração segura
+    const defaultProfile = {
+      name: "Pet Shop Animal Feliz",
+      tradeName: "Animal Feliz Matriz",
+      slug: "animal-feliz",
+      primaryColor: "#10b981",
+      secondaryColor: "#047857",
+      exclusiveLink: window.location.origin + "/petshop/animal-feliz?ref=AFELIZ2026"
+    };
+
+    function applyProfile(profile) {
+      document.documentElement.style.setProperty('--brand-primary', profile.primaryColor || '#10b981');
+      document.documentElement.style.setProperty('--brand-secondary', profile.secondaryColor || '#047857');
+      const exclusiveLink = profile.exclusiveLink || (window.location.origin + "/petshop/" + profile.slug + "?ref=" + profile.slug);
+      
+      const linkInput = document.getElementById('exclusive-link-input');
+      if (linkInput) linkInput.value = exclusiveLink;
+      
+      const qrImg = document.getElementById('qr-image');
+      if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(exclusiveLink)}`;
+      
+      const btnWhatsapp = document.getElementById('btn-share-whatsapp');
+      if (btnWhatsapp) btnWhatsapp.href = `https://api.whatsapp.com/send?text=${encodeURIComponent('Conheça o atendimento veterinário online do ' + profile.name + ': ' + exclusiveLink)}`;
+    }
+
+    async function initPage() {
+      applyProfile(defaultProfile);
+
+      // Tenta consultar dinamicamente se o perfil existir no Supabase
+      if (supabaseClient) {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const slug = urlParams.get('slug') || 'animal-feliz';
+
+          const { data, error } = await supabaseClient.rpc('get_public_petshop_profile', {
+            p_identifier: slug
+          });
+
+          if (!error && data) {
+            applyProfile({
+              name: data.trade_name || data.name,
+              tradeName: data.trade_name,
+              slug: data.slug,
+              primaryColor: data.white_label_config?.primary_color || defaultProfile.primaryColor,
+              secondaryColor: data.white_label_config?.secondary_color || defaultProfile.secondaryColor,
+              exclusiveLink: window.location.origin + "/petshop/" + data.slug + "?ref=" + (data.referral_code || data.slug)
+            });
+          }
+        } catch (e) {
+          console.debug('Usando perfil default resiliente:', e);
+        }
+      }
+    }
+
+    initPage();
+
+    document.getElementById('btn-copy-link')?.addEventListener('click', () => {
+      const input = document.getElementById('exclusive-link-input');
+      if (input) {
+        input.select();
+        navigator.clipboard.writeText(input.value);
+        alert('Link exclusivo copiado para a área de transferência!');
+      }
+    });
+  </script>
+</body>
+</html>
