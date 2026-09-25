@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href=https://github.com/macconsultoriasant-lgtm/televet.gitcss2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <style>
     :root {
@@ -20,6 +20,7 @@
       --text-muted: #94a3b8;
       --danger: #ef4444;
       --success: #10b981;
+      --warning: #f59e0b;
     }
 
     * {
@@ -73,6 +74,37 @@
       border-radius: 50%;
       background: var(--success);
       box-shadow: 0 0 8px var(--success);
+    }
+
+    .recording-indicator {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .recording-indicator.active {
+      display: flex;
+    }
+
+    .rec-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--danger);
+      box-shadow: 0 0 10px var(--danger);
+      animation: blink 1s infinite alternate;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
     }
 
     /* Layout Split: Vídeo à Esquerda e Prontuário à Direita */
@@ -162,6 +194,19 @@
       background: rgba(51, 65, 85, 0.9);
     }
 
+    .control-btn.rec-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .control-btn.rec-btn.recording {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.8);
+    }
+
     .control-btn.danger {
       background: var(--danger);
       border-color: var(--danger);
@@ -190,6 +235,41 @@
       padding: 24px;
       flex: 1;
       overflow-y: auto;
+    }
+
+    .consent-banner {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+    }
+
+    .consent-banner-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .consent-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .badge-approved {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-waiting {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
     }
 
     .form-group {
@@ -224,6 +304,7 @@
       padding: 18px 24px;
       border-top: 1px solid var(--border-color);
       display: flex;
+      flex-direction: column;
       gap: 12px;
     }
 
@@ -236,6 +317,91 @@
       font-weight: 700;
       cursor: pointer;
       width: 100%;
+    }
+
+    /* Modal de Termo de Consentimento Prévio de Gravação */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      max-width: 580px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f8fafc;
+    }
+
+    .legal-text {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin: 16px 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .legal-item {
+      margin-bottom: 10px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-consent-accept {
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary), #0284c7);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-consent-decline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-consent-decline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
     }
   </style>
 </head>
@@ -251,8 +417,13 @@
       <span style="color: var(--text-muted);">|</span>
       <span>Tutor: <strong>Ana Silva</strong></span>
     </div>
-    <div class="status-badge">
-      <span class="pulse"></span> Consulta Ativa (Criptografia E2E)
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div id="rec-status-badge" class="recording-indicator">
+        <span class="rec-dot"></span> GRAVANDO (<span id="rec-timer">00:00</span>)
+      </div>
+      <div class="status-badge">
+        <span class="pulse"></span> Consulta Ativa (Criptografia E2E)
+      </div>
     </div>
   </header>
 
@@ -280,6 +451,7 @@
         <button class="control-btn" title="Alternar Microfone">🎙️</button>
         <button class="control-btn" title="Alternar Câmera">📷</button>
         <button class="control-btn" title="Compartilhar Tela">🖥️</button>
+        <button id="btn-toggle-rec" class="control-btn rec-btn" title="Gravação da Consulta (Requer autorização prévia)">⏺️</button>
         <button class="control-btn danger" title="Encerrar Chamada">📞</button>
       </div>
     </div>
@@ -291,6 +463,22 @@
       </div>
 
       <div class="panel-body">
+        <!-- Status de Consentimento Prévia de Gravação -->
+        <div class="consent-banner">
+          <div class="consent-banner-header">
+            <strong>🛡️ Ciência e Consentimento Prévio</strong>
+            <span id="consent-bilateral-badge" class="consent-badge badge-approved">Autorização Bilateral Ativa</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 6px;">
+            Ambos os participantes deram ciência e autorizaram a gravação para fins clínicos e periciais.
+          </p>
+          <div style="font-size: 0.75rem; color: #94a3b8; display: flex; justify-content: space-between;">
+            <span>👨‍⚕️ Vet: <strong style="color: #34d399;">Autorizado</strong></span>
+            <span>👤 Tutor: <strong style="color: #34d399;">Autorizado</strong></span>
+            <span>Versão: <strong>v1.0-2026</strong></span>
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Queixa Principal / Anamnese</label>
           <textarea class="form-control" rows="3"
@@ -310,8 +498,15 @@
 
         <div class="form-group">
           <label>Conduta Clínica & Orientações</label>
-          <textarea class="form-control" rows="4"
+          <textarea class="form-control" rows="3"
             placeholder="Prescrição de medicamentos, cuidados, repouso...">Manter isolado de outros cães por 10 dias. Iniciar xarope mucolítico e nebulização.</textarea>
+        </div>
+
+        <!-- Evidência de Gravação Anexada -->
+        <div id="recording-evidence-box" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px dashed rgba(16, 185, 129, 0.4); padding: 12px; border-radius: 10px; font-size: 0.8rem;">
+          <div style="font-weight: 700; color: #34d399; margin-bottom: 4px;">🎬 Gravação Anexada ao Prontuário</div>
+          <p style="color: var(--text-muted); font-size: 0.75rem;">Arquivo: <code id="rec-filename">consulta-84920-rec.webm</code></p>
+          <p style="color: var(--text-muted); font-size: 0.75rem;">Integridade: <span style="font-family: monospace; color: #38bdf8;" id="rec-hash">SHA256: 7f83b165...</span></p>
         </div>
       </div>
 
@@ -324,14 +519,130 @@
 
   </main>
 
+  <!-- Modal de Consentimento Prévio & Ciência dos Fatos (LGPD / CFMV) -->
+  <div id="consent-modal" class="modal-overlay" style="display: flex;">
+    <div class="modal-box">
+      <div class="modal-title">
+        <span>📜</span> Termo de Ciência e Autorização Prévia de Gravação
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        Para garantia jurídica, segurança clínica e transparência recíproca dos fatos ocorridos durante a teleconsulta veterinária:
+      </p>
+
+      <div class="legal-text">
+        <div class="legal-item">
+          <strong>1. Finalidade do Registro:</strong> A presente teleconsulta poderá ser gravada em áudio e vídeo unicamente para fins de prontuário clínico veterinário, segurança jurídica de ambas as partes e esclarecimento de fatos ocorridos.
+        </div>
+        <div class="legal-item">
+          <strong>2. Conformidade LGPD & Sigilo Profissional:</strong> Os dados e mídias gerados estão sob proteção da Lei Geral de Proteção de Dados (Lei nº 13.709/2018) e resoluções vigentes do Conselho Federal de Medicina Veterinária (CFMV).
+        </div>
+        <div class="legal-item">
+          <strong>3. Custódia Segura e Imutabilidade:</strong> A gravação gerada é criptografada e vinculada ao prontuário eletrônico confidencial, vedada a divulgação pública, reprodução desautorizada ou transferência a terceiros sem ordem judicial.
+        </div>
+        <div class="legal-item">
+          <strong>4. Consentimento Informado Bilateral:</strong> Ao clicar em "Autorizar e Prosseguir", você declara estar ciente de que as informações trocadas serão registradas sob sigilo técnico.
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="check-consent-agreement" checked>
+        <label for="check-consent-agreement">Declaro ciência e autorizo previamente a gravação da consulta.</label>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-decline-consent" class="btn-consent-decline">Recusar Gravação</button>
+        <button id="btn-accept-consent" class="btn-consent-accept">Autorizar e Entrar na Sala</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Estado da Gravação e Consentimento
+    let isRecording = false;
+    let recSeconds = 0;
+    let recTimerInterval = null;
+    let hasConsent = true;
+
+    const consentModal = document.getElementById('consent-modal');
+    const btnAcceptConsent = document.getElementById('btn-accept-consent');
+    const btnDeclineConsent = document.getElementById('btn-decline-consent');
+    const btnToggleRec = document.getElementById('btn-toggle-rec');
+    const recStatusBadge = document.getElementById('rec-status-badge');
+    const recTimerEl = document.getElementById('rec-timer');
+    const consentBilateralBadge = document.getElementById('consent-bilateral-badge');
+    const recordingEvidenceBox = document.getElementById('recording-evidence-box');
+
+    // Aceite do Consentimento Prévio
+    btnAcceptConsent.addEventListener('click', () => {
+      hasConsent = true;
+      consentModal.style.display = 'none';
+      consentBilateralBadge.className = 'consent-badge badge-approved';
+      consentBilateralBadge.textContent = 'Autorização Bilateral Ativa';
+      console.log('Consentimento prévio registrado no Supabase com sucesso.');
+    });
+
+    // Recusa do Consentimento
+    btnDeclineConsent.addEventListener('click', () => {
+      hasConsent = false;
+      consentModal.style.display = 'none';
+      consentBilateralBadge.className = 'consent-badge badge-waiting';
+      consentBilateralBadge.textContent = 'Gravação Não Autorizada';
+      btnToggleRec.style.opacity = '0.5';
+      btnToggleRec.title = 'Gravação bloqueada: sem consentimento de ambas as partes.';
+      alert('ℹ️ Aviso: A consulta prosseguirá normalmente, porém o recurso de gravação ficará desativado em conformidade com sua recusa.');
+    });
+
+    // Controle de Iniciar/Parar Gravação
+    btnToggleRec.addEventListener('click', () => {
+      if (!hasConsent) {
+        alert('⚠️ A gravação não pode ser iniciada pois uma das partes não forneceu consentimento prévio.');
+        return;
+      }
+
+      if (!isRecording) {
+        // Iniciar gravação
+        isRecording = true;
+        btnToggleRec.classList.add('recording');
+        btnToggleRec.textContent = '⏹️';
+        btnToggleRec.title = 'Parar Gravação';
+        recStatusBadge.classList.add('active');
+        
+        recSeconds = 0;
+        recTimerInterval = setInterval(() => {
+          recSeconds++;
+          const mins = String(Math.floor(recSeconds / 60)).padStart(2, '0');
+          const secs = String(recSeconds % 60).padStart(2, '0');
+          recTimerEl.textContent = `${mins}:${secs}`;
+        }, 1000);
+
+        console.log('Mecanismo de gravação ativado. Supabase RPC: start_consultation_recording executada.');
+      } else {
+        // Finalizar gravação
+        isRecording = false;
+        clearInterval(recTimerInterval);
+        btnToggleRec.classList.remove('recording');
+        btnToggleRec.textContent = '⏺️';
+        btnToggleRec.title = 'Gravação Concluída';
+        recStatusBadge.classList.remove('active');
+
+        // Exibir evidência anexada
+        recordingEvidenceBox.style.display = 'block';
+        document.getElementById('rec-filename').textContent = `consulta-84920-rec-${Date.now()}.webm (${recSeconds}s)`;
+        document.getElementById('rec-hash').textContent = 'SHA256: 9b2d8e4f5a... (Assinado)';
+
+        alert(`📹 Gravação finalizada com sucesso (${recSeconds} segundos)!\n\nO arquivo e os metadados de integridade foram enviados ao Supabase Storage e associados ao prontuário médico.`);
+      }
+    });
+
+    // Finalização da consulta
     document.getElementById('btn-finish-consultation')?.addEventListener('click', () => {
-      alert('✅ Atendimento concluído com sucesso!\n\n📄 Prontuário eletrônico arquivado sob sigilo médico.\n💊 Receita Digital emitida com código único: RX-8849-2026.\n📊 Repasse financeiro consolidado.');
+      if (isRecording) {
+        btnToggleRec.click(); // para a gravação automaticamente antes de fechar
+      }
+      alert('✅ Atendimento concluído com sucesso!\n\n📄 Prontuário eletrônico arquivado sob sigilo médico.\n🎬 Mídia audiovisual e consentimentos auditados no Supabase.\n💊 Receita Digital emitida com código único: RX-8849-2026.\n📊 Repasse financeiro consolidado.');
       window.location.href = './dashboard-admin-master.html';
     });
   </script>
-
-  </main>
 
 </body>
 

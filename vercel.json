@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "public": false,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/src/views/index.html" },
+    { "source": "/teleconsulta", "destination": "/src/views/teleconsultation-room.html" },
+    { "source": "/teleconsulta/:id", "destination": "/src/views/teleconsultation-room.html" },
+    { "source": "/agendamento", "destination": "/src/views/tutor-booking-flow.html" },
+    { "source": "/veterinarios", "destination": "/src/views/veterinarians-catalog.html" },
+    { "source": "/checkout", "destination": "/src/views/checkout-transparent.html" },
+    { "source": "/admin", "destination": "/src/views/dashboard-admin-master.html" },
+    { "source": "/petshop-planos", "destination": "/src/views/petshop-saas-plans.html" },
+    { "source": "/petshop/:slug", "destination": "/src/views/petshop-page.html" },
+    { "source": "/views/:match*", "destination": "/src/views/:match*" },
+    { "source": "/:match*", "destination": "/src/views/:match*" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
+}

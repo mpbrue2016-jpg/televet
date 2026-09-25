@@ -40,3 +40,6 @@
 
 -- FASE 9: DASHBOARDS ANALÍTICOS (MASTER, PET SHOP, VET, TUTOR) E GOVERNANÇA GLOBAL
 \ir migrations/0019_analytics_dashboards_and_master_config.sql
+
+-- FASE 10: MECANISMO DE GRAVAÇÃO DE TELECONSULTA E AUTORIZAÇÃO PRÉVIA (LGPD & CFMV)
+\ir migrations/0020_consultation_recording_and_consent.sql

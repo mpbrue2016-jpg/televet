@@ -116,7 +116,8 @@ televet/
     │   ├── 0016_teleconsultation_and_clinical_security.sql
     │   ├── 0017_financial_engine_splits_and_chargebacks.sql
     │   ├── 0018_saas_plans_subscriptions_and_dunning.sql
-    │   └── 0019_analytics_dashboards_and_master_config.sql
+    │   ├── 0019_analytics_dashboards_and_master_config.sql
+    │   └── 0020_consultation_recording_and_consent.sql
     └── tests/                              # Suítes de testes automatizados
         ├── clinical_security_test.sql
         ├── dashboards_and_analytics_test.sql
