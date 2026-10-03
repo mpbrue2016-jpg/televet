@@ -219,7 +219,8 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Garante que tentativas de UPDATE / DELETE nas tabelas médicas por Pet Shops sejam bloqueadas no banco
 
 -- Regra de bloqueio em medical_records
-CREATE OR REPLACE POLICY policy_block_petshop_tampering_medical_records ON public.medical_records
+DROP POLICY IF EXISTS policy_block_petshop_tampering_medical_records ON public.medical_records;
+CREATE POLICY policy_block_petshop_tampering_medical_records ON public.medical_records
 FOR UPDATE USING (
     public.is_admin() OR 
     veterinarian_id IN (SELECT id FROM public.veterinarians WHERE user_id = auth.uid())
@@ -229,7 +230,8 @@ FOR UPDATE USING (
 );
 
 -- Regra de bloqueio em prescriptions
-CREATE OR REPLACE POLICY policy_block_petshop_tampering_prescriptions ON public.prescriptions
+DROP POLICY IF EXISTS policy_block_petshop_tampering_prescriptions ON public.prescriptions;
+CREATE POLICY policy_block_petshop_tampering_prescriptions ON public.prescriptions
 FOR UPDATE USING (
     public.is_admin() OR 
     veterinarian_id IN (SELECT id FROM public.veterinarians WHERE user_id = auth.uid())
@@ -239,7 +241,8 @@ FOR UPDATE USING (
 );
 
 -- Regra de bloqueio em professional_registrations (Pet Shop NUNCA pode alterar CRMV)
-CREATE OR REPLACE POLICY policy_block_petshop_tampering_crmv ON public.professional_registrations
+DROP POLICY IF EXISTS policy_block_petshop_tampering_crmv ON public.professional_registrations;
+CREATE POLICY policy_block_petshop_tampering_crmv ON public.professional_registrations
 FOR UPDATE USING (
     public.is_admin() OR 
     veterinarian_id IN (SELECT id FROM public.veterinarians WHERE user_id = auth.uid())

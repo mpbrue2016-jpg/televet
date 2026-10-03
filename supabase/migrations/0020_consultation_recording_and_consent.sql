@@ -50,7 +50,8 @@ ON public.consultation_recording_consents(consultation_id);
 ALTER TABLE public.consultation_recording_consents ENABLE ROW LEVEL SECURITY;
 
 -- 4. Políticas de RLS para os Registros de Consentimento
-CREATE OR REPLACE POLICY policy_view_recording_consents ON public.consultation_recording_consents
+DROP POLICY IF EXISTS policy_view_recording_consents ON public.consultation_recording_consents;
+CREATE POLICY policy_view_recording_consents ON public.consultation_recording_consents
 FOR SELECT USING (
     public.is_admin() OR
     user_id = auth.uid() OR
@@ -62,7 +63,8 @@ FOR SELECT USING (
     )
 );
 
-CREATE OR REPLACE POLICY policy_insert_recording_consents ON public.consultation_recording_consents
+DROP POLICY IF EXISTS policy_insert_recording_consents ON public.consultation_recording_consents;
+CREATE POLICY policy_insert_recording_consents ON public.consultation_recording_consents
 FOR INSERT WITH CHECK (
     user_id = auth.uid() OR public.is_admin()
 );
