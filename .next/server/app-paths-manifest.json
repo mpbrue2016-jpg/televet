@@ -1,3 +1,8 @@
 {
-  "/not-found": "app/not-found.js"
+  "/not-found": "app/not-found.js",
+  "/(public)/cadastro/tutor/page": "app/(public)/cadastro/tutor/page.js",
+  "/page": "app/page.js",
+  "/(public)/cadastro/veterinario/page": "app/(public)/cadastro/veterinario/page.js",
+  "/(tutor)/dashboard/pet/novo/page": "app/(tutor)/dashboard/pet/novo/page.js",
+  "/(tutor)/dashboard/pet/[id]/page": "app/(tutor)/dashboard/pet/[id]/page.js"
 }
