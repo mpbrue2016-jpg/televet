@@ -41,20 +41,26 @@ INSERT INTO public.consultations (
 );
 
 -- 2. TESTE 6.1: Veterinária Inicia e Finaliza a Teleconsulta com Prontuário
+INSERT INTO public.clinical_medication_catalog (
+    id, name, active_ingredient, presentation, requires_qualified_signature
+) VALUES (
+    '10300000-0000-4000-8000-000000000001',
+    'Xarope Mucolítico de Teste',
+    'mucolítico de teste',
+    'xarope',
+    FALSE
+) ON CONFLICT (id) DO NOTHING;
+
 SET LOCAL "request.jwt.claim.sub" = 'c1111111-1111-1111-1111-111111111111'; -- Dra. Camila
 SET LOCAL "app.current_tenant_id" = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 
 DO $$
 DECLARE
-    v_start_res JSONB;
     v_finish_res JSONB;
     v_rx_res JSONB;
     v_med_record_count INTEGER;
 BEGIN
-    -- 1. Inicia chamada
-    SELECT public.start_teleconsultation('c9999999-9999-9999-9999-999999999999') INTO v_start_res;
-
-    -- 2. Finaliza e salva prontuário
+    -- 1. Finaliza a fixture clínica sem usar a RPC antiga de token inseguro.
     SELECT public.finish_teleconsultation(
         'c9999999-9999-9999-9999-999999999999',
         'Tosse seca e secreção nasal discreta há 3 dias.',
@@ -67,7 +73,7 @@ BEGIN
     -- 3. Emite receita
     SELECT public.issue_digital_prescription(
         'c9999999-9999-9999-9999-999999999999',
-        '[{"name": "Xarope Mucolítico Pet", "dosage": "5ml", "frequency": "12/12h", "duration": "5 dias"}]'::jsonb,
+        '[{"catalog_id": "10300000-0000-4000-8000-000000000001", "dosage": "5ml", "frequency": "12/12h", "duration": "5 dias", "route": "oral"}]'::jsonb,
         'Oferecer bastante água fresca.'
     ) INTO v_rx_res;
 

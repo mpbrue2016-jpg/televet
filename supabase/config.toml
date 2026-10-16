@@ -1,0 +1,59 @@
+project_id = "televet"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[functions.create-video-token]
+verify_jwt = true
+
+[functions.start-video-recording]
+verify_jwt = true
+
+[functions.stop-video-recording]
+verify_jwt = true
+
+[functions.finish-video-consultation]
+verify_jwt = true
+
+[functions.reconcile-video-rooms]
+verify_jwt = false
+
+[functions.cleanup-consultation-recordings]
+verify_jwt = false
+
+[functions.upload-clinical-document]
+verify_jwt = true
+
+[functions.get-clinical-document-url]
+verify_jwt = true
+
+[functions.generate-prescription-pdf]
+verify_jwt = true
+
+[functions.generate-medical-record-pdf]
+verify_jwt = true
+
+[functions.upload-vaccination-document]
+verify_jwt = true
+
+[functions.get-vaccination-document-url]
+verify_jwt = true
+
+[functions.generate-vaccination-card]
+verify_jwt = true
+
+[functions.livekit-webhook]
+verify_jwt = false

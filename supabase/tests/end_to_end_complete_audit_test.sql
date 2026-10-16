@@ -339,8 +339,6 @@ BEGIN
         v_consultation_id, v_tenant_id, v_petshop_id, v_appointment_id, v_tutor_id, v_pet_id, v_vet_id, v_specialty_id, 'waiting_room'
     );
 
-    PERFORM public.start_teleconsultation(v_consultation_id);
-
     -- ETAPA 16: Finaliza Teleconsulta, Registra Prontuário e Emite Receita Digital
     PERFORM public.finish_teleconsultation(
         v_consultation_id,
@@ -350,9 +348,19 @@ BEGIN
         'Recomendado ecocardiograma em 6 meses e dieta com teor controlado de sódio.'
     );
 
+    INSERT INTO public.clinical_medication_catalog (
+        id, name, active_ingredient, presentation, requires_qualified_signature
+    ) VALUES (
+        '10300000-0000-4000-8000-000000000002',
+        'Suplemento de Teste',
+        'coenzima q10 de teste',
+        'cápsula',
+        FALSE
+    ) ON CONFLICT (id) DO NOTHING;
+
     SELECT public.issue_digital_prescription(
         v_consultation_id,
-        '[{"name": "Suplemento Cardíaco CoQ10", "dosage": "1 capsula", "frequency": "24/24h", "duration": "30 dias"}]'::jsonb,
+        '[{"catalog_id": "10300000-0000-4000-8000-000000000002", "dosage": "1 cápsula", "frequency": "24/24h", "duration": "30 dias", "route": "oral"}]'::jsonb,
         'Evitar exercícios físicos extenuantes em horários quentes.'
     ) INTO v_rx_res;
 
