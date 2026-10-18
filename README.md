@@ -53,3 +53,12 @@ npx supabase db reset
 - Execute em sequência as migrações de `0001` até `0009` (ou copie e cole seu conteúdo).
 - Execute `seed.sql` para carregar o ecossistema de teste.
 - Execute `tests/tenant_isolation_test.sql` para validar o isolamento.
+
+### 3. Validação automatizada no final de cada fase
+```bash
+npm run phase:validate -- --phase 6
+npm run phase:validate -- --phase 6 --skip-e2e
+npm run phase:validate:dry
+```
+
+Esse comando executa em sequência o reset do banco, o lint do Supabase, os testes do banco, o `tsc --noEmit` e o lint do Next.js. Caso a fase tenha Playwright relevante, basta remover `--skip-e2e`.
