@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowLeft, CheckCircle2 } from "lucide-react"
 import { Logo } from "@/components/ui/logo"
+import { BookingForm } from "./booking-form"
 
 export default async function BookingPage() {
   const initialPets = [

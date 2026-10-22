@@ -9,6 +9,17 @@ export type AppointmentStatus =
   | 'reembolsado'
   | 'no_show';
 
+export type AppointmentReservationStatus =
+  | 'available'
+  | 'reserved'
+  | 'awaiting_payment'
+  | 'confirmed'
+  | 'in_attendance'
+  | 'completed'
+  | 'cancelled'
+  | 'rescheduled'
+  | 'no_show';
+
 export interface BookAppointmentInput {
   tenantId: string;
   petshopId: string;
@@ -18,6 +29,11 @@ export interface BookAppointmentInput {
   specialtyId: string;
   scheduledFor: string; // ISO String
   reasonForVisit?: string;
+}
+
+export interface TelemedicineBookingCheck {
+  allowed: boolean;
+  reason: string;
 }
 
 import { getSupabaseClient, SUPABASE_URL, SUPABASE_ANON_KEY } from '../config/supabase-client';
@@ -80,6 +96,22 @@ export class AppointmentService {
     };
   }
 
+  async canBookTeleconsultation(petId: string, veterinarianId: string): Promise<TelemedicineBookingCheck> {
+    const { data, error } = await this.supabase.rpc('can_book_teleconsultation', {
+      p_pet_id: petId,
+      p_veterinarian_id: veterinarianId,
+    });
+
+    if (error) {
+      throw new Error(`Erro ao validar teleconsulta: ${error.message}`);
+    }
+
+    return {
+      allowed: Boolean(data?.allowed ?? data),
+      reason: data?.reason ?? 'A relação prévia veterinário-animal-responsável está válida.',
+    };
+  }
+
   /**
    * Cancelamento de agendamento
    */
@@ -106,5 +138,41 @@ export class AppointmentService {
     if (error) {
       throw new Error(`Erro ao reagendar consulta: ${error.message}`);
     }
+  }
+
+  /**
+   * Reserva um slot com hold de 10 minutos para evitar duplicidade de agenda em concorrência.
+   */
+  async reserveAppointmentSlot(appointmentId: string, holdMinutes = 10): Promise<{ status: AppointmentReservationStatus; holdExpiresAt: string | null }> {
+    const { data, error } = await this.supabase.rpc('reserve_appointment_slot', {
+      p_appointment_id: appointmentId,
+      p_hold_minutes: holdMinutes,
+    });
+
+    if (error) {
+      throw new Error(`Erro ao reservar horário: ${error.message}`);
+    }
+
+    return {
+      status: data?.status ?? 'reserved',
+      holdExpiresAt: data?.hold_expires_at ?? null,
+    };
+  }
+
+  /**
+   * Confirma a reserva, validando transição de status do agendamento.
+   */
+  async confirmAppointmentReservation(appointmentId: string): Promise<{ status: AppointmentReservationStatus }> {
+    const { data, error } = await this.supabase.rpc('confirm_appointment_reservation', {
+      p_appointment_id: appointmentId,
+    });
+
+    if (error) {
+      throw new Error(`Erro ao confirmar agendamento: ${error.message}`);
+    }
+
+    return {
+      status: data?.status ?? 'confirmed',
+    };
   }
 }

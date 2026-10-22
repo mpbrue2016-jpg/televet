@@ -1,8 +1,15 @@
 {
-  "/not-found": "app/not-found.js",
+  "/_not-found": "app/_not-found.js",
   "/(public)/cadastro/tutor/page": "app/(public)/cadastro/tutor/page.js",
-  "/page": "app/page.js",
   "/(public)/cadastro/veterinario/page": "app/(public)/cadastro/veterinario/page.js",
-  "/(tutor)/dashboard/pet/novo/page": "app/(tutor)/dashboard/pet/novo/page.js",
-  "/(tutor)/dashboard/pet/[id]/page": "app/(tutor)/dashboard/pet/[id]/page.js"
+  "/(public)/privacidade/page": "app/(public)/privacidade/page.js",
+  "/(public)/termos/page": "app/(public)/termos/page.js",
+  "/agendamento/page": "app/agendamento/page.js",
+  "/page": "app/page.js",
+  "/petshop/[slug]/page": "app/petshop/[slug]/page.js",
+  "/receita/[codigo]/page": "app/receita/[codigo]/page.js",
+  "/teleconsulta/[id]/page": "app/teleconsulta/[id]/page.js",
+  "/(tutor)/dashboard/pet/[id]/page": "app/(tutor)/dashboard/pet/[id]/page.js",
+  "/(tutor)/dashboard/page": "app/(tutor)/dashboard/page.js",
+  "/(tutor)/dashboard/pet/novo/page": "app/(tutor)/dashboard/pet/novo/page.js"
 }

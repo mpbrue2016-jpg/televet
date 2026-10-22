@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import { CopyButton } from "./copy-button"
+import { AttributionInitializer } from "./attribution-initializer"
 import { CheckCircle2, Video, MapPin, Clock } from "lucide-react"
 
 export default async function PetshopPage({
@@ -56,6 +57,11 @@ export default async function PetshopPage({
       
       {/* Mobile-first constraints matching drvets app */}
       <div className="w-full max-w-md mx-auto relative flex-1 flex flex-col">
+        <AttributionInitializer
+          referralCode={profile.referralCode}
+          slug={profile.slug}
+          petshopId={petshop?.id || petshop?.petshop_id}
+        />
         
         {/* Topbar White-Label Indicator */}
         <div 

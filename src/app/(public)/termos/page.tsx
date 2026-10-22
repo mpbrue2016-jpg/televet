@@ -58,7 +58,7 @@ export default function TermosDeUsoPage() {
               4. Consentimento e Autenticação
             </h3>
             <p>
-              Ao finalizar o seu cadastro clicando em "Aceito", este ato gera um registro eletrônico auditável em nosso banco de dados contendo data, hora, endereço de IP e detalhes do dispositivo (User-Agent). Esta assinatura é válida para fins legais.
+              Ao finalizar o seu cadastro clicando em &quot;Aceito&quot;, este ato gera um registro eletrônico auditável em nosso banco de dados contendo data, hora, endereço de IP e detalhes do dispositivo (User-Agent). Esta assinatura é válida para fins legais.
             </p>
 
             <hr className="my-8 border-slate-200" />

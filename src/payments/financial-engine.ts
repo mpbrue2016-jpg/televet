@@ -19,6 +19,31 @@ export interface PaymentProcessingInput {
   campaignCode?: string;
 }
 
+export interface PaymentGatewayConfigInput {
+  tenantId: string;
+  providerName: 'stripe' | 'pagarme' | 'asaas' | 'mercadopago' | 'manual';
+  isEnabled?: boolean;
+  config?: Record<string, unknown>;
+}
+
+export interface PaymentWebhookEventInput {
+  tenantId: string;
+  paymentId: string;
+  providerName: 'stripe' | 'pagarme' | 'asaas' | 'mercadopago' | 'manual';
+  providerEventId: string;
+  eventType: string;
+  payload?: Record<string, unknown>;
+}
+
+export type PaymentGatewayStatus =
+  | 'pending'
+  | 'requires_action'
+  | 'processing'
+  | 'succeeded'
+  | 'failed'
+  | 'canceled'
+  | 'refunded';
+
 import { getSupabaseClient, SUPABASE_URL, SUPABASE_ANON_KEY } from '../config/supabase-client';
 
 export class FinancialEngine {
@@ -106,5 +131,84 @@ export class FinancialEngine {
     }
 
     return data.id;
+  }
+
+  /**
+   * Configura um gateway real do provedor, sem armazenar segredos sensíveis em texto puro.
+   * O ambiente real segue pendente até que a chave do provedor venha do runtime.
+   */
+  async registerGatewayConfig(input: PaymentGatewayConfigInput): Promise<{ success: boolean; providerName: string; isEnabled: boolean }> {
+    const { data, error } = await this.supabase.rpc('register_payment_gateway_config', {
+      p_tenant_id: input.tenantId,
+      p_provider_name: input.providerName,
+      p_is_enabled: input.isEnabled ?? false,
+      p_config: input.config ?? {},
+    });
+
+    if (error) {
+      throw new Error(`Erro ao configurar gateway: ${error.message}`);
+    }
+
+    return {
+      success: Boolean(data?.success ?? true),
+      providerName: data?.provider_name ?? input.providerName,
+      isEnabled: Boolean(data?.is_enabled ?? input.isEnabled ?? false),
+    };
+  }
+
+  /**
+   * Registra um evento de webhook do provedor com deduplicação por provider_event_id.
+   */
+  async registerWebhookEvent(input: PaymentWebhookEventInput): Promise<{ duplicate: boolean; eventId: string | null; paymentId: string | null }> {
+    const { data, error } = await this.supabase.rpc('register_payment_webhook_event', {
+      p_tenant_id: input.tenantId,
+      p_payment_id: input.paymentId,
+      p_provider_name: input.providerName,
+      p_provider_event_id: input.providerEventId,
+      p_event_type: input.eventType,
+      p_payload: input.payload ?? {},
+    });
+
+    if (error) {
+      throw new Error(`Erro ao registrar webhook: ${error.message}`);
+    }
+
+    return {
+      duplicate: Boolean(data?.duplicate ?? false),
+      eventId: data?.event_id ?? null,
+      paymentId: data?.payment_id ?? input.paymentId ?? null,
+    };
+  }
+
+  /**
+   * Atualiza o status do gateway e o ledger financeiro do pagamento.
+   */
+  async applyProviderStatus(
+    paymentId: string,
+    providerName: PaymentGatewayConfigInput['providerName'],
+    providerStatus: PaymentGatewayStatus,
+    providerEventId?: string,
+    reason?: string,
+    payload?: Record<string, unknown>
+  ): Promise<{ success: boolean; paymentId: string; providerStatus: PaymentGatewayStatus; paymentStatus: string }> {
+    const { data, error } = await this.supabase.rpc('apply_provider_status_update', {
+      p_payment_id: paymentId,
+      p_provider_name: providerName,
+      p_provider_status: providerStatus,
+      p_provider_event_id: providerEventId ?? null,
+      p_reason: reason ?? null,
+      p_payload: payload ?? {},
+    });
+
+    if (error) {
+      throw new Error(`Erro ao atualizar status do gateway: ${error.message}`);
+    }
+
+    return {
+      success: Boolean(data?.success ?? false),
+      paymentId: data?.payment_id ?? paymentId,
+      providerStatus: data?.provider_status ?? providerStatus,
+      paymentStatus: data?.payment_status ?? 'pending',
+    };
   }
 }
