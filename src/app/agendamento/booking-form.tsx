@@ -115,7 +115,7 @@ export function BookingForm({ initialPets, initialTutor }: { initialPets: any[],
           </div>
         )}
 
-        {/* Motivo */}
+        {/* Motivo & Triagem de Urgência */}
         <div>
           <label className="text-xs font-semibold text-slate-500 block mb-1.5">Sintomas / Motivo da consulta:</label>
           <textarea 
@@ -123,6 +123,22 @@ export function BookingForm({ initialPets, initialTutor }: { initialPets: any[],
             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 outline-none focus:border-[#005bb5] transition-colors"
             placeholder="Descreva brevemente os sintomas observados."
           ></textarea>
+
+          {/* Atalho de EMERGÊNCIA (Fase 7 -> Fase 16) */}
+          <div className="mt-3 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start justify-between gap-3 text-xs">
+            <div className="text-rose-800">
+              <strong className="block font-bold">Atenção em caso de urgência crítica:</strong>
+              <span>Sinais como falta de ar severa, sangramentos ou convulsões exigem atendimento presencial ou resgate imediato.</span>
+            </div>
+            <a
+              href="/diretorio?categoria=ambulancia&atende24h=true&emergencia=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-extrabold rounded-lg shrink-0 transition-colors shadow-sm"
+            >
+              Chamar Ambulância 24h
+            </a>
+          </div>
         </div>
       </div>
 

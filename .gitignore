@@ -1,10 +1,21 @@
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
 .env.*
-node_modules/
+!.env.example
+
+# Next.js build output
+.next/
+out/
 dist/
 build/
-.env
-.env.*
-node_modules/
-dist/
-build/
+
+# Typescript cache
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs & temp
+*.log
+.DS_Store

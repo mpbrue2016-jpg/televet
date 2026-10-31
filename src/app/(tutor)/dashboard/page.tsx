@@ -5,6 +5,7 @@ import { Plus, Activity, FileText, ChevronRight, CalendarDays, PawPrint, Refresh
 import Link from 'next/link';
 import { getSupabaseClient } from '@/config/supabase-client';
 import { TutorService, type PetDTO } from '@/appointments/tutor-service';
+import { EmergencyBanner } from '@/components/directory/emergency-banner';
 
 function formatAge(birthDate?: string): string {
   if (!birthDate) return 'Não informada';
@@ -57,6 +58,9 @@ export default function TutorDashboardPage() {
 
   return (
     <div className="space-y-8">
+      {/* Atalho de Emergência para Ambulâncias 24h e Resgate */}
+      <EmergencyBanner compact />
+
       {/* Header Resumo */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
