@@ -16,6 +16,8 @@
     "supabase:stop": "supabase stop",
     "supabase:reset": "supabase db reset",
     "supabase:test": "supabase test db",
+    "test:notifications": "tsx scripts/test-notifications-runner.mjs",
+    "test:admin": "tsx scripts/test-admin-runner.mjs",
     "supabase:types": "supabase gen types typescript --local > src/types/supabase.ts"
   },
   "dependencies": {
