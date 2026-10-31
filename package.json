@@ -20,6 +20,7 @@
     "test:admin": "npx tsx scripts/test-admin-runner.mjs",
     "test:directory": "npx tsx scripts/test-directory-runner.mjs",
     "test:ads": "npx tsx scripts/test-ads-runner.mjs",
+    "supabase:build-all": "node scripts/build-deploy-all.mjs",
     "supabase:types": "supabase gen types typescript --local > src/types/supabase.ts"
   },
   "dependencies": {
