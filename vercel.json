@@ -30,7 +30,7 @@
       ]
     },
     {
-      "source": "/teleconsulta/(.*)",
+         "source": "/teleconsulta/:path*",
       "headers": [
         {
           "key": "Permissions-Policy",
